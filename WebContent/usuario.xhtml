@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="usuarioId" value="#{usuarioBean.usuarioId}" />
+		<f:viewAction action="#{usuarioBean.carregarUsuarioPelaId}"
+			if="#{param.usuarioId != null}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+				LISTA DE USUÁRIOS
+		</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form>
+
+			<h:messages id="messages" />
+
+			<fieldset>
+				<legend>Dados do Usuario</legend>
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="CPF:" for="cpf" />
+					<h:inputText id="cpf" value="#{usuarioBean.usuario.cpf}"
+						required="true" requiredMessage="CPF obrigatório" maxlength="14" >
+						<f:validateLength minimum="11" />
+						<f:ajax event="blur" render="messages" />
+					</h:inputText>
+
+					<h:outputLabel value="Nome:" for="nome" />
+					<h:inputText id="nome" value="#{usuarioBean.usuario.nome}"  style="text-transform: uppercase"/>
+
+					<h:outputLabel value="Email:" for="email" />
+					<h:inputText id="email" value="#{usuarioBean.usuario.email}" />
+
+					<h:outputLabel value="Cargo:" for="cargo" />
+					<h:selectOneMenu value="#{usuarioBean.cargoId}" id="cargo" style="width:174px">
+						<f:selectItems value="#{usuarioBean.cargos}" var="cargo"
+							itemLabel="#{cargo.descricao}" itemValue="#{cargo.cdCargo}" />
+					</h:selectOneMenu>
+					
+					<h:outputLabel value="Orgao:" for="orgao" />
+					<h:selectOneMenu value="#{usuarioBean.orgaoId}" id="orgao" style="width:174px">
+						<f:selectItems value="#{usuarioBean.orgaos}" var="orgao"
+							itemLabel="#{orgao.descricao}" itemValue="#{orgao.cdOrgao}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+			</fieldset>
+
+			<fieldset>
+				<legend>Sistemas do Usuario</legend>
+
+				<h:outputLabel value="Selecione Sistema:" for="sistema" />
+				<h:selectOneMenu value="#{usuarioBean.sistemaId}" id="sistema">
+					<f:selectItems value="#{usuarioBean.sistemas}" var="sistema"
+						itemLabel="#{sistema.descricao}" itemValue="#{sistema.cdSistema}" />
+				</h:selectOneMenu>
+				<h:commandButton value="Vincular Sistema"
+					action="#{usuarioBean.gravarSistema}">
+					<f:ajax execute="sistema" render="tabelaSistema" />
+				</h:commandButton>
+
+				<br />
+
+
+				<h:dataTable value="#{usuarioBean.sistemasDoUsuario}" var="sistema"
+					id="tabelaSistema">
+					<h:column>
+						<h:outputText value="#{sistema.descricao}" />
+					</h:column>
+					<h:column>
+						<h:commandLink value="X"
+							action="#{usuarioBean.removerSistemaDoUsuario(sistema)}" />
+					</h:column>
+				</h:dataTable>
+			</fieldset>
+			<h:commandButton value="Gravar Usuário" action="#{usuarioBean.gravar}"  style="width:242px; margin-left:2px; margin-top:2px">
+				<f:ajax execute="@form"
+					render="@form :formTabelaUsuarios:tabelaUsuarios" />
+			</h:commandButton>
+			<br />
+			
+			<fieldset>
+				<legend>Novo</legend>
+				<h:commandLink value="Cadastrar Cargo"
+				action="#{usuarioBean.formCargo}" immediate="true" />
+				-
+
+				<h:commandLink value="Cadastrar Orgao"
+				action="#{usuarioBean.formOrgao}" immediate="true" />
+				-
+
+				<h:commandLink value="Cadastrar Sistema"
+				action="#{usuarioBean.formSistema}" immediate="true" />
+			</fieldset>
+			
+		</h:form>
+
+		<h:form id="formTabelaUsuarios">
+			<h:dataTable value="#{usuarioBean.usuarios}" var="usuario"
+				id="tabelaUsuarios" border="1" width="99%" style="margin-left:3px">
+				<h:column>
+					<f:facet name="header">CPF</f:facet>
+					<h:outputText value="#{usuario.cpf}" mask="999.999.999-67" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{usuario.nome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Email</f:facet>
+					<h:outputText value="#{usuario.email}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Cargo</f:facet>
+					<h:outputText value="#{usuario.cargo.descricao}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Orgao</f:facet>
+					<h:outputText value="#{usuario.orgao.descricao}" />
+				</h:column>				
+				<h:column>
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink value="Alterar"
+						action="#{usuarioBean.carregar(usuario)}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink value="Remover"
+						action="#{usuarioBean.remover(usuario)}" />
+				</h:column>
+			</h:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="cargoId" value="#{cargoBean.cargoId}" />
+		<f:viewAction action="#{cargoBean.carregarCargoPelaId}"
+			if="#{param.cargoId != null}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+				Cargos
+		</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="cargo">
+			<fieldset>
+				<legend>Dados do Cargo</legend>
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Descrição:" for="descricao" />
+					<h:inputText id="descricao" value="#{cargoBean.cargo.descricao}"
+						required="true">
+					</h:inputText>
+
+
+					<h:commandButton value="Gravar" action="#{cargoBean.gravar}" />
+				</h:panelGrid>
+			</fieldset>
+		</h:form>
+
+		<h:form id="formTabelaCargos">
+			<h:dataTable value="#{cargoBean.cargos}" var="cargo"
+				id="tabelaCargos">
+				<h:column>
+					<f:facet name="header">Descrição</f:facet>
+					<h:outputText value="#{cargo.descricao}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink value="altera" action="#{cargoBean.carregar(cargo)}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink value="remove" action="#{cargoBean.remover(cargo)}" />
+				</h:column>
+			</h:dataTable>
+			<br></br>
+			<h:commandLink value="Voltar" action="#{cargoBean.formUsuario}"
+				immediate="true" />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

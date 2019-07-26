@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="sistemaId" value="#{sistemaBean.sistemaId}" />
+		<f:viewAction action="#{sistemaBean.carregarSistemaPelaId}"
+			if="#{param.sistemaId != null}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+				Sistema
+		</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="sistema">
+			<fieldset>
+				<legend>Dados do Sistema</legend>
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Descrição:" for="descricao" />
+					<h:inputText id="descricao"
+						value="#{sistemaBean.sistema.descricao}" required="true">
+					</h:inputText>
+
+
+					<h:commandButton value="Gravar" action="#{sistemaBean.gravar}" />
+				</h:panelGrid>
+			</fieldset>
+		</h:form>
+
+		<h:form id="formTabelaSistemas">
+			<h:dataTable value="#{sistemaBean.sistemas}" var="sistema"
+				id="tabelaSistemas">
+				<h:column>
+					<f:facet name="header">Descrição</f:facet>
+					<h:outputText value="#{sistema.descricao}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink value="altera"
+						action="#{sistemaBean.carregar(sistema)}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink value="remove"
+						action="#{sistemaBean.remover(sistema)}" />
+				</h:column>
+			</h:dataTable>
+			<br></br>
+			<h:commandLink value="Voltar" action="#{sistemaBean.formUsuario}"
+				immediate="true" />
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+</html>
