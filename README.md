@@ -14,4 +14,4 @@ Pré-requisitos:
 *  Adicionar as credenciais de acesso ao SGBD no arquivo **src\META-INF\persistence.xml** dentro da propriedade **user** e **password**(caso não possua senha, deixar o value vazio).
 *  Executar o arquivo **src/br/com/sistemasefaz/dao/PopulaBanco.java** para que o Hibernate se responsabilize pela estruturação das tabelas e seu povoamento.
 *  Usar as credenciais de acesso: **admin/admin** para se logar no sistema.
-*  Usar a URL **http://localhost:8080/sistemasefaz/login.xhtml** para iniciar a aplicação.
+*  Usar a URL **http://localhost:[porta]/sistemasefaz/login.xhtml** para iniciar a aplicação.
